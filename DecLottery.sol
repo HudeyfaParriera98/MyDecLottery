@@ -65,6 +65,10 @@ contract DecentralizedLottery {
         // Emit winner event
         emit LotteryWinner(winner, prize);
     }
+// Simple pseudo-random number generation based on block variables
+    function generateRandomNumber(uint256 _modulus) internal view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, participants))) % _modulus;
+    }
 
     
 }
