@@ -76,5 +76,9 @@ contract DecentralizedLottery {
 
         payable(msg.sender).transfer(ticketPrice);
     }
-    
+    // Admin function to retrieve any remaining funds
+    function withdrawRemainingFunds() external onlyAdmin onlyAfterLottery {
+        require(lotteryClosed, "Lottery is still open");
+        payable(admin).transfer(address(this).balance);
+    }
 }
