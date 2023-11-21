@@ -69,6 +69,12 @@ contract DecentralizedLottery {
     function generateRandomNumber(uint256 _modulus) internal view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, participants))) % _modulus;
     }
+// Allow participants to withdraw their funds if the lottery is closed and they didn't win
+    function withdrawFunds() external onlyAfterLottery {
+        require(lotteryClosed, "Lottery is still open");
+        require(!hasParticipated[msg.sender], "Cannot withdraw if you participated and didn't win");
 
+        payable(msg.sender).transfer(ticketPrice);
+    }
     
 }
